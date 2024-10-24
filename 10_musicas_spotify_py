@@ -1,0 +1,25 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Carregar o arquivo CSV
+df = pd.read_csv('//content//Spotify Most Streamed Songs.csv')
+
+# Converter a coluna 'streams' para numérica, removendo possíveis caracteres não numéricos
+df['streams'] = pd.to_numeric(df['streams'], errors='coerce')
+
+# Selecionar as 10 músicas mais ouvidas
+top_10_most_streamed = df.nlargest(10, 'streams')
+
+# Exibir as 10 músicas mais ouvidas
+print("\nTop 10 Músicas Mais Ouvidas:")
+print(top_10_most_streamed[['track_name', 'artist(s)_name', 'streams']])
+
+# Plotar as 10 músicas mais ouvidas
+plt.figure(figsize=(12, 6))
+plt.barh(top_10_most_streamed['track_name'], top_10_most_streamed['streams'], color='c')
+plt.xlabel('Número de Streams')
+plt.ylabel('Música')
+plt.title('Top 10 Músicas Mais Ouvidas')
+plt.gca().invert_yaxis()  # Inverter o eixo Y para que a música mais ouvida apareça no topo
+plt.grid(True)
+plt.show()
